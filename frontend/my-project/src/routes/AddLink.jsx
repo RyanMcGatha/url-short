@@ -1,11 +1,12 @@
 import "./addLink.css";
+import { Form } from "react-router-dom";
 
 const AddLink = () => {
   return (
     <div id="mainLink">
       <div className="login-box-shadow">
         <div className="login-box">
-          <form>
+          <Form method="POST">
             <div className="user-box">
               <input type="text" name="" required="" />
               <label>Link Title</label>
@@ -14,13 +15,12 @@ const AddLink = () => {
               <input type="text" name="" required="" />
               <label>Link to Shorten</label>
             </div>
-            <center>
-              <a href="#">
+            <div className="user-box">
+              <button className="btn" type="submit">
                 SEND
-                <span></span>
-              </a>
-            </center>
-          </form>
+              </button>
+            </div>
+          </Form>
         </div>
       </div>
     </div>

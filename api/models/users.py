@@ -12,13 +12,15 @@ import bcrypt
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
+    user_name = Column(String, unique=True)
     email = Column(String, unique=True)
     hashed_password = Column(String)
 
     UniqueConstraint("email", name="og_user_email")
+    UniqueConstraint("user_name", name="og_user_name")
 
     def __repr__(self):
-        return f"<User {self.email}>"
+        return f"<User {self.email}> <User {self.user_name}"
 
     @staticmethod
     def hash_password(password) -> str:
@@ -31,6 +33,7 @@ class User(Base):
 
 
 class UserBaseSchema(BaseModel):
+     user_name: str
      email: str
 
 class UserSchema(UserBaseSchema):

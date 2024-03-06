@@ -100,6 +100,10 @@ def register(payload: UserAccountSchema):
     payload.hashed_password = User.hash_password(payload.hashed_password)
     return create_user(user=payload)
 
+
+
+
+
 @app.post("/login")
 async def login(payload: UserAccountSchema):
     try:
