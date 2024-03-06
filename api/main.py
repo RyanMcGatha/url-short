@@ -1,11 +1,26 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from models import base, Links
+from models import base, Links, services
 from models.Links import Links, LinksSchema
-from db import session
+from db import session, engine
+from models.base import Base
+from models.users import User, UserSchema, UserAccountSchema
+from models.services import create_user, get_user
+from config import settings
 
-app = FastAPI()
+def create_tables():
+    Base.metadata.create_all(bind=engine)
+
+def start_application():
+    app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
+    create_tables()
+    return app
+
+
+app = start_application()
+
+
 
 origins = [
     "http://localhost",
@@ -77,3 +92,27 @@ async def delete_link(link_title: str):
         return {"Deleted Link": link_title}
     else:
         return {"message": "Link not found"}
+    
+
+
+@app.post("/register", response_model=UserSchema)
+def register(payload: UserAccountSchema): 
+    payload.hashed_password = User.hash_password(payload.hashed_password)
+    return create_user(user=payload)
+
+@app.post("/login")
+async def login(payload: UserAccountSchema):
+    try:
+      user:  User = get_user(email=payload.email)
+
+    except:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    is_validated: bool = user.validate_password(payload.hashed_password)
+    
+    if not is_validated:
+        raise HTTPException(status_code=404, detail="Invalid Credentials")
+    return {"message": "Logged in successfully"}
+
+
+
