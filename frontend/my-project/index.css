@@ -1,0 +1,14 @@
+body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background: #1c1c1c;
+}
+
+:root {
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}

@@ -3,8 +3,8 @@ import Nav from "../components/Nav";
 
 const primaryNav = [
   { title: "Home", url: "/" },
-  { title: "Listings", url: "/" },
-  { title: "Add Listing", url: "/" },
+  { title: "Sign Up", url: "/signup" },
+  { title: "Add Link", url: "/addlink" },
 ];
 
 const Layout = () => {
