@@ -6,6 +6,7 @@ export async function action({ request }) {
   const title = formData.get("title");
   const long_url = formData.get("long_url");
   const data = { title, long_url };
+
   const url = "http://localhost:8000/links/create";
   const addLink = await fetch(url, {
     method: "POST",

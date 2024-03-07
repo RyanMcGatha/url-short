@@ -3,11 +3,13 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from models import base, Links, services
 from models.Links import Links, LinksSchema
+from models.tokens import Token, TokenData, create_access_token
 from db import session, engine
 from models.base import Base
 from models.users import User, UserSchema, UserAccountSchema
 from models.services import create_user, get_user
 from config import settings
+from datetime import datetime, timedelta, timezone
 
 def create_tables():
     Base.metadata.create_all(bind=engine)
@@ -107,7 +109,7 @@ def register(payload: UserAccountSchema):
 @app.post("/login")
 async def login(payload: UserAccountSchema):
     try:
-      user:  User = get_user(email=payload.email)
+      user:  User = get_user(user_name=payload.user_name)
 
     except:
         raise HTTPException(status_code=404, detail="User not found")
@@ -116,7 +118,13 @@ async def login(payload: UserAccountSchema):
     
     if not is_validated:
         raise HTTPException(status_code=404, detail="Invalid Credentials")
-    return {"message": "Logged in successfully"}
+    
+    access_token_expires = timedelta(minutes=120)
+    access_token = create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expires
+    )
+
+    return Token(access_token=access_token, token_type="bearer")
 
 
 

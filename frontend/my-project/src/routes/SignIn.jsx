@@ -14,9 +14,13 @@ export async function action({ request }) {
     body: JSON.stringify(data),
   }).then((response) => response.json());
 
-  console.log(addUser);
-
-  return redirect("/addlink");
+  if (addUser && addUser.access_token) {
+    console.log("Access token obtained:", addUser.access_token);
+    return true;
+  } else {
+    console.log("Failed to obtain access token");
+    return false;
+  }
 }
 
 const SignIn = () => {

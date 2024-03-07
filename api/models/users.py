@@ -20,7 +20,7 @@ class User(Base):
     UniqueConstraint("user_name", name="og_user_name")
 
     def __repr__(self):
-        return f"<User {self.email}> <User {self.user_name}"
+        return f"<User {self.email}, {self.user_name}>"
 
     @staticmethod
     def hash_password(password) -> str:
@@ -40,7 +40,7 @@ class UserSchema(UserBaseSchema):
      id: int
      
      class Config:
-          populate_by_nmae = True
+          populate_by_name = True
 
 
 class UserAccountSchema(UserBaseSchema):

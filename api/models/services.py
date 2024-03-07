@@ -11,6 +11,6 @@ def create_user(user: UserAccountSchema):
     session.refresh(db_user)
     return db_user
 
-def get_user(email: str):
-    user = session.query(User).filter(User.email == email).first()
+def get_user(user_name: str):
+    user = session.query(User).filter(User.user_name == user_name).first()
     return user
