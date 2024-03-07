@@ -43,7 +43,7 @@ def home():
 
 @app.post("/links/create")
 async def create_link(link_data: LinksSchema):
-    link = Links(title=link_data.title, long_url=link_data.long_url, short_url=link_data.short_url, user_id=link_data.user_id)
+    link = Links(**link_data.model_dump())
     
     session.add(link)
     session.commit()

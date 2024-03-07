@@ -3,8 +3,8 @@ import Layout from "./pages/Layout";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./routes/Home";
 import SignUp, { action as addUserAction } from "./routes/SignUp";
-import SignIn from "./routes/SignIn";
-import AddLink from "./routes/AddLink";
+import SignIn, { action as userLoginAction } from "./routes/SignIn";
+import AddLink, { action as addLinkAction } from "./routes/AddLink";
 
 const router = createBrowserRouter([
   {
@@ -23,10 +23,12 @@ const router = createBrowserRouter([
       {
         path: "/signin",
         element: <SignIn />,
+        action: userLoginAction,
       },
       {
         path: "/addlink",
         element: <AddLink />,
+        action: addLinkAction,
       },
     ],
   },
