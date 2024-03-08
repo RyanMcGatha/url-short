@@ -5,18 +5,27 @@ export async function action({ request }) {
   const formData = await request.formData();
   const title = formData.get("title");
   const long_url = formData.get("long_url");
-  const data = { title, long_url };
 
-  const url = "http://localhost:8000/links/create";
-  const addLink = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  }).then((response) => response.json());
+  const linkData = { title, long_url };
 
-  console.log(addLink);
+  try {
+    const url = "http://localhost:8000/links/create";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify(linkData),
+    });
 
-  return redirect("/");
+    const statusCode = response.status;
+
+    return statusCode === 200 ? true : false;
+  } catch (error) {
+    console.error("ERROR: ", error);
+    return false;
+  }
 }
 
 const AddLink = () => {

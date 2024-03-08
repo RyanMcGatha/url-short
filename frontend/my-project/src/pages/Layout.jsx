@@ -6,6 +6,7 @@ const primaryNav = [
   { title: "Sign Up", url: "/signup" },
   { title: "Add Link", url: "/addlink" },
   { title: "Sign In", url: "/signin" },
+  { title: "Log Out", url: "/logout" },
 ];
 
 const Layout = () => {

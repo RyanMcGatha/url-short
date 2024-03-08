@@ -1,0 +1,46 @@
+.logOutBtn {
+  background-color: transparent;
+  border: 0;
+  scale: 2;
+  border-radius: 15px;
+
+  animation: gradientHov 3s linear infinite;
+}
+
+.logOutBtn:hover {
+  animation: gradient 3s linear infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+    box-shadow: 0px 0px 5px #cf59e6, 0px 0px 10px #6bc5f8, 0px 0px 50px #6bc5f8;
+  }
+
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0px 0px 10px #cf59e6, 0px 0px 50px #cf59e6;
+  }
+
+  100% {
+    background-position: 0 50%;
+    box-shadow: 0px 0px 5px #cf59e6, 0px 0px 10px #6bc5f8, 0px 0px 50px #6bc5f8;
+  }
+}
+
+@keyframes gradientHov {
+  0% {
+    background-position: 0 50%;
+    box-shadow: 0px 0px 5px #ffffff, 0px 0px 10px #ffffff, 0px 0px 50px #ffffff;
+  }
+
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0px 0px 10px #ffffff, 0px 0px 50px #ffffff;
+  }
+
+  100% {
+    background-position: 0 50%;
+    box-shadow: 0px 0px 5px #ffffff, 0px 0px 10px #ffffff, 0px 0px 50px #ffffff;
+  }
+}

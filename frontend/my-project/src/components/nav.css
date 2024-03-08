@@ -20,6 +20,34 @@ nav {
   color: rgb(255, 255, 255);
 }
 
+#items a:hover {
+  color: transparent;
+  background: linear-gradient(
+    to left,
+    #6bc5f8,
+    #cf59e6,
+    #6bc5f8,
+    #cf59e6,
+    #6bc5f8,
+    #cf59e6,
+    #6bc5f8,
+    #cf59e6,
+    #6bc5f8,
+    #cf59e6,
+    #6bc5f8,
+    #cf59e6,
+    #6bc5f8,
+    #cf59e6,
+    #6bc5f8,
+    #cf59e6
+  );
+  background-clip: text;
+  background-size: 50000px 50000px; /* Updated value */
+  animation: gradientMove 40s linear infinite;
+  filter: drop-shadow(0px 0px 10px rgb(255, 255, 255));
+  filter: saturate(200%);
+}
+
 @keyframes gradient {
   0% {
     background-position: 0 50%;

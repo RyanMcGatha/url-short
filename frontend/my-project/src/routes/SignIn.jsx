@@ -6,19 +6,27 @@ export async function action({ request }) {
   const user_name = formData.get("user_name");
   const email = formData.get("email");
   const password = formData.get("password");
-  const data = { user_name, email, password };
-  const url = "http://localhost:8000/login";
-  const addUser = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  }).then((response) => response.json());
+  const loginData = { user_name, email, password };
 
-  if (addUser && addUser.access_token) {
-    console.log("Access token obtained:", addUser.access_token);
-    return true;
-  } else {
-    console.log("Failed to obtain access token");
+  try {
+    const url = "http://localhost:8000/login";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginData),
+    });
+
+    const statusCode = response.status;
+    const data = await response.json();
+
+    const { access_token } = data;
+    localStorage.clear();
+    localStorage.setItem("access_token", access_token);
+    return statusCode === 200 ? true : false;
+  } catch (error) {
+    console.error("ERROR: ", error);
     return false;
   }
 }
@@ -43,7 +51,7 @@ const SignIn = () => {
                 <label>Password</label>
               </div>
               <div className="user-box">
-                <button className="btn" type="submit">
+                <button className="btn" type="submit" onClick={redirect("/")}>
                   SIGN IN
                 </button>
               </div>

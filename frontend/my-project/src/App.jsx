@@ -5,6 +5,8 @@ import Home from "./routes/Home";
 import SignUp, { action as addUserAction } from "./routes/SignUp";
 import SignIn, { action as userLoginAction } from "./routes/SignIn";
 import AddLink, { action as addLinkAction } from "./routes/AddLink";
+import { AuthProvider } from "./routes/AuthContacs";
+import LogOut from "./routes/LogOut";
 
 const router = createBrowserRouter([
   {
@@ -30,12 +32,20 @@ const router = createBrowserRouter([
         element: <AddLink />,
         action: addLinkAction,
       },
+      {
+        path: "/logout",
+        element: <LogOut />,
+      },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />;
+    </AuthProvider>
+  );
 }
 
 export default App;

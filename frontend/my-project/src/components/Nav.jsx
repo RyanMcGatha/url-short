@@ -9,7 +9,9 @@ const Navigation = ({ navItems }) => {
         {navItems.map((link, index) => {
           return (
             <div id="items" key={`${link.title}-${index}`}>
-              <Link to={link.url}>{link.title}</Link>
+              <Link className="idek" to={link.url}>
+                {link.title}
+              </Link>
             </div>
           );
         })}
