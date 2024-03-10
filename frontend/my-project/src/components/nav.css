@@ -1,26 +1,22 @@
 nav {
-  justify-content: center;
   display: flex;
   align-items: center;
   justify-content: center;
-
   height: 6vh;
+  width: 100vw;
 }
 
-#itemContainer {
-  display: flex;
-  gap: 5vw;
-}
-
-#items a {
+.navItem a {
   font-size: 1.5em;
   font-weight: 800;
   filter: drop-shadow(0px 0px 10px rgb(255, 255, 255));
   animation: flickering 2s linear infinite both;
   color: rgb(255, 255, 255);
+  margin-right: 1em;
+  margin-left: 1em;
 }
 
-#items a:hover {
+.navItem a:hover {
   color: transparent;
   background: linear-gradient(
     to left,

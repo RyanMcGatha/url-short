@@ -1,18 +1,10 @@
 import { Outlet } from "react-router-dom";
 import Nav from "../components/Nav";
 
-const primaryNav = [
-  { title: "Home", url: "/" },
-  { title: "Sign Up", url: "/signup" },
-  { title: "Add Link", url: "/addlink" },
-  { title: "Sign In", url: "/signin" },
-  { title: "Log Out", url: "/logout" },
-];
-
 const Layout = () => {
   return (
     <>
-      <Nav navItems={primaryNav} />
+      <Nav />
       <Outlet />
     </>
   );

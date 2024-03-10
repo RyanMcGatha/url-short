@@ -1,27 +1,36 @@
-import PropTypes from "prop-types";
+import { useAuth } from "../routes/AuthContacs";
 import { Link } from "react-router-dom";
 import "./nav.css";
 
-const Navigation = ({ navItems }) => {
+export default function Nav() {
+  const { isAuth } = useAuth();
   return (
     <nav>
-      <div id="itemContainer">
-        {navItems.map((link, index) => {
-          return (
-            <div id="items" key={`${link.title}-${index}`}>
-              <Link className="idek" to={link.url}>
-                {link.title}
-              </Link>
-            </div>
-          );
-        })}
+      <div>
+        {isAuth && (
+          <div className="navItem">
+            <Link to="/">Home</Link>
+          </div>
+        )}
+      </div>
+      <div>
+        {isAuth && (
+          <div className="navItem">
+            <Link to="/addlink">Add Link</Link>
+          </div>
+        )}
+      </div>
+      <div>
+        {isAuth ? (
+          <div className="navItem">
+            <Link to={"/logout"}>Sign Out</Link>
+          </div>
+        ) : (
+          <div className="navItem">
+            <Link to={"/signin"}>Sign In</Link>
+          </div>
+        )}
       </div>
     </nav>
   );
-};
-
-Navigation.propTypes = {
-  navItems: PropTypes.array,
-};
-
-export default Navigation;
+}

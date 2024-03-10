@@ -1,9 +1,12 @@
+from fastapi import HTTPException, status
 import os
 from dotenv import load_dotenv
 
 from pathlib import Path
 env_path = Path('.')/'.env'
 load_dotenv(dotenv_path=env_path)
+
+
 
 class Settings:
     PROJECT_NAME: str = 'Shorten URL App'
@@ -17,5 +20,12 @@ class Settings:
 
     DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
     SECRET_KEY: str = os.getenv("SECRET_KEY")
+    ALGORITHM = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 30
+    CREDENTIALS_EXCEPTION = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail='Could not validate credentials',
+        headers={'WWW-Authenticate': 'Bearer'},
+    )
 
 settings = Settings()

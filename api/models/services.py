@@ -1,8 +1,13 @@
-from fastapi import HTTPException, status, Query
-from models.users import User, UserSchema, UserAccountSchema
-
+from fastapi import HTTPException, status, Query, Depends
+from fastapi.security import OAuth2PasswordBearer
+from models.users import User,  UserAccountSchema
+from models.tokens import TokenData, is_token_blacklisted
 from db import session
 from config import settings
+
+import jwt
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 def create_user(user: UserAccountSchema):
     db_user = User(**user.model_dump())
@@ -13,4 +18,29 @@ def create_user(user: UserAccountSchema):
 
 def get_user(user_name: str):
     user = session.query(User).filter(User.user_name == user_name).first()
+    return user
+
+async def get_current_user_token(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY,
+                             algorithms=[settings.ALGORITHM])
+        email: str = payload.get("email")
+
+        if is_token_blacklisted(token):
+            raise credentials_exception
+        if email is None:
+            raise credentials_exception
+        token_data = TokenData(email=email)
+    except jwt.ExpiredSignatureError:
+        raise credentials_exception
+    except jwt.DecodeError:
+        raise credentials_exception
+    user = session.query(User).filter(User.email == email).first()
+    if user is None:
+        raise credentials_exception
     return user

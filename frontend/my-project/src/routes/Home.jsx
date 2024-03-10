@@ -9,7 +9,11 @@ const Home = () => {
     <div id="main">
       <h1>Welcome to the URL Shortener App</h1>
       {isAuth ? (
-        <p>Logged In</p>
+        <div>
+          <Link to="/addlink">
+            <p>You Are Signed In</p>
+          </Link>
+        </div>
       ) : (
         <div id="loginLink">
           <Link to="/signin">

@@ -1,5 +1,7 @@
 import "./signUp.css";
-import { Form, redirect } from "react-router-dom";
+import { Form, Navigate, useActionData } from "react-router-dom";
+import { useAuth } from "./AuthContacs";
+import { useEffect } from "react";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -32,7 +34,14 @@ export async function action({ request }) {
 }
 
 const SignIn = () => {
-  return (
+  const { isAuth, setIsAuth } = useAuth();
+  const response = useActionData();
+
+  useEffect(() => {
+    setIsAuth(response);
+  }, [response, setIsAuth]);
+
+  return !isAuth ? (
     <div id="head">
       <div id="mainLink">
         <div className="login-box-shadow">
@@ -51,7 +60,7 @@ const SignIn = () => {
                 <label>Password</label>
               </div>
               <div className="user-box">
-                <button className="btn" type="submit" onClick={redirect("/")}>
+                <button className="btn" type="submit">
                   SIGN IN
                 </button>
               </div>
@@ -60,6 +69,8 @@ const SignIn = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <Navigate to="/" />
   );
 };
 

@@ -1,15 +1,25 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Depends, Query
 from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
-from models import base, Links, services
-from models.Links import Links, LinksSchema
-from models.tokens import Token, TokenData, create_access_token
+from sqlalchemy.exc import IntegrityError
+from datetime import datetime, timedelta
+
 from db import session, engine
-from models.base import Base
-from models.users import User, UserSchema, UserAccountSchema
-from models.services import create_user, get_user
 from config import settings
-from datetime import datetime, timedelta, timezone
+
+from models.base import Base
+from models.Links import Links, LinksSchema
+from models.users import User, UserSchema, UserAccountSchema
+from models.tokens import Token, TokenData, create_access_token
+from models.services import create_user, get_user, get_current_user_token
+from models.tokens import Token, BlacklistedToken, create_access_token
+
+import jwt
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+
 
 def create_tables():
     Base.metadata.create_all(bind=engine)
@@ -129,3 +139,17 @@ async def login(payload: UserAccountSchema):
 
 
 
+@app.get('/logout', status_code=200)
+def logout(token: Token = Depends(oauth2_scheme)):
+    try:
+        token = BlacklistedToken(token=token)
+        session.add(token)
+        session.commit()
+    except IntegrityError as e:
+        raise settings.CREDENTIALS_EXCEPTION
+    return {"details:": "Logged out"}
+
+
+@app.get('/getUser', status_code=200)
+async def get_user_id(current_user: str = Depends(get_current_user_token)):
+    return {"email": current_user.email, "id": current_user.id}
